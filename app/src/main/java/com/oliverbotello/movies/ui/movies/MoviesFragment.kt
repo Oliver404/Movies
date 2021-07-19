@@ -43,7 +43,7 @@ class MoviesFragment : Fragment() {
 
     private fun initView() {
         val adapter: MovieAdapter =
-            MovieAdapter({ movie -> this.onClickItem(movie) })
+            MovieAdapter({ movie -> this.onSelectItem(movie) })
         this.rcclrcVw_Movies.adapter = adapter
         this.viewModel?.let {
             it.bussy.observe(this) {
@@ -51,11 +51,13 @@ class MoviesFragment : Fragment() {
             }
             it.lstMovies.observe(this) {
                 adapter.submitList(it)
+
+                if (it.size > 0) this.onSelectItem(it[0])
             }
         }
     }
 
-    private fun onClickItem(movie: Movie) {
+    private fun onSelectItem(movie: Movie) {
         val idImage = this.resources.getIdentifier(
             movie.posterPath.replace(".jpg", ""),
             "drawable",
