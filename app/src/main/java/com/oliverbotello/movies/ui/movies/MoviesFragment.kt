@@ -37,7 +37,7 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         this.initView()
-        this.viewModel?.initMovies()
+        this.viewModel.initMovies()
     }
 
     private fun initView() {
