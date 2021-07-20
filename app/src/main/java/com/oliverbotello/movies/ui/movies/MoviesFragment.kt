@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.oliverbotello.movies.R
 import com.oliverbotello.movies.models.Movie
 import com.oliverbotello.movies.ui.adapters.MovieAdapter
+import com.oliverbotello.movies.utils.toDate
 import com.oliverbotello.movies.utils.toStringFormat
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.card_movie_layout.view.*
@@ -51,28 +52,28 @@ class MoviesFragment : Fragment() {
             it.lstMovies.observe(this) {
                 adapter.submitList(it)
 
-                if (it.size > 0) this.onSelectItem(it[0])
+                it.let {
+                    if (it.size > 0) this.onSelectItem(it[0])
+                }
             }
         }
     }
 
     private fun onSelectItem(movie: Movie) {
-        val idImage = this.resources.getIdentifier(
-            movie.posterPath.replace(".jpg", ""),
-            "drawable",
-            this.context?.packageName
-        )
         this.txtVw_SelectedTitle.text = movie.title
-        this.txtVw_SelectedDate.text = movie.releaseDate.toStringFormat()
-        this.txtVw_Description.text = movie.description
+        this.txtVw_SelectedDate.text =
+            if (movie.releaseDate.isNullOrBlank()) ""
+            else movie.releaseDate.toDate().toStringFormat()
+        this.txtVw_Description.text = movie.overview
+
         Glide
             .with(this.imgVw_Poster.context)
-            .load(this.imgVw_Poster.context.getDrawable(idImage))
+            .load(movie.getPosterUrl(true))
             .placeholder(R.drawable.ic_movie)
             .into(this.imgVw_MiniPoster)
         Glide
             .with(this.imgVw_Poster.context)
-            .load(this.imgVw_Poster.context.getDrawable(idImage))
+            .load(movie.getPosterUrl())
             .placeholder(R.drawable.ic_movie)
             .into(this.imgVw_Poster)
     }

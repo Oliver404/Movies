@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.oliverbotello.movies.R
 import com.oliverbotello.movies.models.Movie
+import com.oliverbotello.movies.utils.toDate
 import com.oliverbotello.movies.utils.toStringFormat
 import kotlinx.android.synthetic.main.card_movie_layout.view.*
 
@@ -24,17 +25,14 @@ class MovieVH(view: View, val onClick: (Movie) -> Unit) : RecyclerView.ViewHolde
     fun bind(movie: Movie) {
         this.currentMovie = movie
         this.itemView.txtVw_Title.text = movie.title
-        this.itemView.txtVw_Date.text = movie.releaseDate.toStringFormat()
+        this.itemView.txtVw_Date.text =
+            if (movie.releaseDate.isNullOrBlank()) ""
+            else movie.releaseDate.toDate().toStringFormat()
         this.itemView.txtVw_Range.text = movie.voteAverage.toString()
-        val idImage = this.itemView.context.resources.getIdentifier(
-            movie.backdropPath.replace(".jpg", ""),
-            "drawable",
-            this.itemView.context.packageName
-        )
 
         Glide
             .with(this.itemView.context)
-            .load(this.itemView.context.getDrawable(idImage))
+            .load(movie.getBackdrop())
             .placeholder(R.drawable.ic_movie)
             .into(this.itemView.imgVw_Movie)
     }
