@@ -10,5 +10,5 @@ data class Movie(
     val voteAverage: Float = 0f,
     val posterPath: String = "",
     val backdropPath: String = "",
-    val description: String = "",
+    val overview: String = "",
 )

@@ -64,7 +64,7 @@ class MoviesFragment : Fragment() {
         )
         this.txtVw_SelectedTitle.text = movie.title
         this.txtVw_SelectedDate.text = movie.releaseDate.toStringFormat()
-        this.txtVw_Description.text = movie.description
+        this.txtVw_Description.text = movie.overview
         Glide
             .with(this.imgVw_Poster.context)
             .load(this.imgVw_Poster.context.getDrawable(idImage))
