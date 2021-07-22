@@ -11,7 +11,7 @@ import com.oliverbotello.movies.utils.toDate
 import com.oliverbotello.movies.utils.toStringFormat
 import kotlinx.android.synthetic.main.card_movie_layout.view.*
 
-class MovieVH(view: View, val onClick: (Movie) -> Unit) : RecyclerView.ViewHolder(view) {
+open class MovieVH(view: View, val onClick: (Movie) -> Unit) : RecyclerView.ViewHolder(view) {
     private var currentMovie: Movie? = null
 
     init {
@@ -22,7 +22,7 @@ class MovieVH(view: View, val onClick: (Movie) -> Unit) : RecyclerView.ViewHolde
         }
     }
 
-    fun bind(movie: Movie) {
+    open fun bind(movie: Movie) {
         this.currentMovie = movie
         this.itemView.txtVw_Title.text = movie.title
         this.itemView.txtVw_Date.text =

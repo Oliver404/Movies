@@ -13,9 +13,11 @@ import retrofit2.Response
 class MoviesViewModel : ViewModel(), Callback<APIResult> {
     val bussy: MutableLiveData<Boolean> = MutableLiveData(false);
     val lstMovies: MutableLiveData<MutableList<Movie>> = MutableLiveData(mutableListOf())
-    var movieRepository: MovieRepository = MovieRepository()
+    private var movieRepository: MovieRepository = MovieRepository()
+    private var validateMovies: Boolean = false;
 
     fun initMovies() {
+        this.validateMovies = false;
         this.bussy.value = true
         movieRepository.getPopularMovies(this)
     }
@@ -23,7 +25,8 @@ class MoviesViewModel : ViewModel(), Callback<APIResult> {
     override fun onResponse(call: Call<APIResult>, response: Response<APIResult>) {
         if (response.isSuccessful) {
             if (response.body() !== null) {
-                this.lstMovies.value = response.body()!!.results.toMutableList()
+                if (this.validateMovies)
+                    this.lstMovies.value = response.body()!!.results.toMutableList()
             }
             else {
                 // Erorr
