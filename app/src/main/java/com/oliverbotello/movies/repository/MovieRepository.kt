@@ -2,6 +2,7 @@ package com.oliverbotello.movies.repository
 
 import com.oliverbotello.movies.models.APIResult
 import com.oliverbotello.movies.models.Movie
+import com.oliverbotello.movies.models.Serie
 import com.oliverbotello.movies.repository.API.MoviesAPI
 import com.oliverbotello.movies.utils.API_KEY
 import com.oliverbotello.movies.utils.API_URL
@@ -24,9 +25,15 @@ class MovieRepository {
         }
     }
 
-    fun getPopularMovies(callback: Callback<APIResult>) {
+    fun getPopularMovies(callback: Callback<APIResult<Movie>>) {
         API_CONNECTION?.let {
             it.getPopularMovies(API_KEY, DEFAULT_LANGUAGE).enqueue(callback)
+        }
+    }
+
+    fun getPopularTv(callback: Callback<APIResult<Serie>>) {
+        API_CONNECTION?.let {
+            it.getPopularTv(API_KEY, DEFAULT_LANGUAGE).enqueue(callback)
         }
     }
 

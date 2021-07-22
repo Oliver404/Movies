@@ -2,20 +2,17 @@ package com.oliverbotello.movies.ui.movies
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.oliverbotello.movies.R
 import com.oliverbotello.movies.models.Movie
+import com.oliverbotello.movies.models.Show
 import com.oliverbotello.movies.ui.adapters.MovieAdapter
 import com.oliverbotello.movies.utils.toDate
 import com.oliverbotello.movies.utils.toStringFormat
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.card_movie_layout.view.*
 import kotlinx.android.synthetic.main.movies_fragment.*
 
 class MoviesFragment : Fragment() {
@@ -45,35 +42,33 @@ class MoviesFragment : Fragment() {
         val adapter: MovieAdapter =
             MovieAdapter({ movie -> this.onSelectItem(movie) })
         this.rcclrcVw_Movies.adapter = adapter
-        this.viewModel?.let {
+        this.viewModel?.let { it ->
             it.bussy.observe(this) {
                 this.pgrssBr.visibility = if (it) View.VISIBLE else View.GONE
             }
-            it.lstMovies.observe(this) {
-                adapter.submitList(it)
-
+            it.lstShows.observe(this) {
                 it.let {
+                    adapter.submitList(it)
+
                     if (it.size > 0) this.onSelectItem(it[0])
                 }
             }
         }
     }
 
-    private fun onSelectItem(movie: Movie) {
-        this.txtVw_SelectedTitle.text = movie.title
-        this.txtVw_SelectedDate.text =
-            if (movie.releaseDate.isNullOrBlank()) ""
-            else movie.releaseDate.toDate().toStringFormat()
-        this.txtVw_Description.text = movie.overview
+    private fun onSelectItem(show: Show) {
+        this.txtVw_SelectedTitle.text = show.title
+        this.txtVw_SelectedDate.text = show.getDate()
+        this.txtVw_Description.text = show.overview
 
         Glide
             .with(this.imgVw_Poster.context)
-            .load(movie.getPosterUrl(true))
+            .load(show.getPosterUrl(true))
             .placeholder(R.drawable.ic_movie)
             .into(this.imgVw_MiniPoster)
         Glide
             .with(this.imgVw_Poster.context)
-            .load(movie.getPosterUrl())
+            .load(show.getPosterUrl())
             .placeholder(R.drawable.ic_movie)
             .into(this.imgVw_Poster)
     }
