@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.oliverbotello.movies.R
 import com.oliverbotello.movies.models.Movie
+import com.oliverbotello.movies.models.Serie
 import com.oliverbotello.movies.models.Show
 import com.oliverbotello.movies.utils.toDate
 import com.oliverbotello.movies.utils.toStringFormat
 import kotlinx.android.synthetic.main.card_movie_layout.view.*
 
-class MovieVH(view: View, onClick: (Show) -> Unit) : ShowVH<Movie>(view, onClick) {
-
+class SerieVH(view: View, onClick: (Show) -> Unit) : ShowVH<Serie>(view, onClick) {
     override fun bind(show: Show) {
         this.currentShow = show
         this.itemView.txtVw_Title.text = show.getTitleShow()
@@ -28,10 +28,10 @@ class MovieVH(view: View, onClick: (Show) -> Unit) : ShowVH<Movie>(view, onClick
     }
 
     companion object {
-        fun newInstance(viewGroup: ViewGroup, onClick: (Show) -> Unit): MovieVH =
-            MovieVH(
+        fun newInstance(viewGroup: ViewGroup, onClick: (Show) -> Unit): SerieVH =
+            SerieVH(
                 LayoutInflater.from(viewGroup.context)
-                    .inflate(R.layout.card_movie_layout, viewGroup, false),
+                    .inflate(R.layout.card_serie_layout, viewGroup, false),
                 onClick
             )
     }

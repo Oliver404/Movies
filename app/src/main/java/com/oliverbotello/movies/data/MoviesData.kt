@@ -1,10 +1,5 @@
 package com.oliverbotello.movies.data
 
-import com.oliverbotello.movies.models.Movie
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
-
 object MoviesData {
 //    fun getPopularMovies(): List<Movie> {
 //        val dateFormat = SimpleDateFormat("yyyy-MM-dd");

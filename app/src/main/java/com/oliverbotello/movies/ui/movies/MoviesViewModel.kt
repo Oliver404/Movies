@@ -4,26 +4,35 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.oliverbotello.movies.models.APIResult
 import com.oliverbotello.movies.models.Movie
+import com.oliverbotello.movies.models.Serie
+import com.oliverbotello.movies.models.Show
 import com.oliverbotello.movies.repository.MovieRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class MoviesViewModel : ViewModel(), Callback<APIResult> {
+class MoviesViewModel : ViewModel(), Callback<APIResult<Movie>> {
     val bussy: MutableLiveData<Boolean> = MutableLiveData(false);
-    val lstMovies: MutableLiveData<MutableList<Movie>> = MutableLiveData(mutableListOf())
+    val lstMovies: MutableLiveData<MutableList<Show>> = MutableLiveData(mutableListOf())
     var movieRepository: MovieRepository = MovieRepository()
 
     fun initMovies() {
         this.bussy.value = true
-        movieRepository.getPopularMovies(this)
+
+        movieRepository.getPopularMovies(this as Callback<APIResult<Movie>>)
+        movieRepository.getPopularSeries(this as Callback<APIResult<Serie>>)
     }
 
-    override fun onResponse(call: Call<APIResult>, response: Response<APIResult>) {
+    override fun onResponse(call: Call<APIResult<Movie>>, response: Response<APIResult<Movie>>) {
         if (response.isSuccessful) {
             if (response.body() !== null) {
-                this.lstMovies.value = response.body()!!.results.toMutableList()
+                var lstShows = mutableListOf<Show>()
+
+                lstShows.addAll(this.lstMovies.value?.toList()?: listOf())
+                lstShows.addAll(response.body()!!.results.toMutableList())
+
+                this.lstMovies.value = lstShows
             }
             else {
                 // Erorr
@@ -36,7 +45,7 @@ class MoviesViewModel : ViewModel(), Callback<APIResult> {
         this.bussy.value = false
     }
 
-    override fun onFailure(call: Call<APIResult>, t: Throwable) {
+    override fun onFailure(call: Call<APIResult<Movie>>, t: Throwable) {
         // Error
         this.bussy.value = false
     }

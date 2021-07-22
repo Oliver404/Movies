@@ -5,19 +5,19 @@ import com.oliverbotello.movies.utils.toDate
 import com.oliverbotello.movies.utils.toStringFormat
 import java.util.*
 
-class Movie(
+class Serie(
     id: Int = 0,
-    val title: String = "",
+    val name: String = "",
     voteAverage: Float = 0f,
     posterPath: String = "",
     backdropPath: String = "",
     overview: String = "",
-    @SerializedName("release_date")
-    val releaseDate: String = Date().toStringFormat("yyyy-MM-dd"),
+    @SerializedName("first_air_date")
+    val firstAirDate: String = Date().toStringFormat("yyyy-MM-dd"),
 ) : Show(id, voteAverage, posterPath, backdropPath, overview) {
-    override fun getTitleShow(): String = this.title
+    override fun getTitleShow(): String = this.name
 
     override fun getDate(): String =
-        if (this.releaseDate.isNullOrBlank()) ""
-        else this.releaseDate.toDate().toStringFormat()
+        if (this.firstAirDate.isNullOrBlank()) ""
+        else this.firstAirDate.toDate().toStringFormat()
 }
